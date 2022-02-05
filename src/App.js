@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useRef } from "react";
+import TodoItem from "./TodoItem";
+import "./App.css";
+import { v4 as uuidv4 } from "uuid";
 
 function App() {
+  const [todos, setTodo] = useState([]);
+  const nameRef = useRef();
+  function addItem(e) {
+    e.preventDefault();
+    const name = nameRef.current.value;
+    setTodo((prevTodo) => {
+      return [...prevTodo, { id: uuidv4(), name: name, complete: false }];
+    });
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>JUST DO IT</h1>
+      <form onSubmit={addItem}>
+        <input ref={nameRef} />
+        <button type="submit">Add Todo</button>
+      </form>
+      <TodoItem todos={todos} />
     </div>
   );
 }
